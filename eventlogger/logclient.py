@@ -11,6 +11,7 @@ LOGLEVELS = [
     logging.CRITICAL
 ]
 
+
 class LogClient(object):
     '''Manages logging of events. '''
     def __init__(self, logger=None):
@@ -18,7 +19,7 @@ class LogClient(object):
             logger = logging.getLogger()
         self.logger = logger
 
-    def send(msg, level):
+    def send(self, msg, level):
         if level not in LOGLEVELS:
             self.logger.warn(
                 f"invalid log level: {level}, using {logging.INFO}"

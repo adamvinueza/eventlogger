@@ -1,9 +1,12 @@
-import json
-from contextlib import ContextManager
-from eventlogger import Fields
+import datetime
+import logging
+import eventlogger.state as state
+from contextlib import contextmanager
+from eventlogger.fields import Fields
 '''
 ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
 '''
+
 
 class Event(object):
     '''A collection of fields to be logged.'''

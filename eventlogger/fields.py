@@ -1,5 +1,5 @@
 import json
-from eventlogger import json_handler
+import eventlogger.json_handler
 '''
 ADAPTED FROM FieldsHolder CLASS AT https://github.com/honeycombio/libhoney-py/
 '''

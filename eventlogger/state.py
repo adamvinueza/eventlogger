@@ -6,6 +6,7 @@ import logging
 CLIENT = None
 WARNED_UNINITIALIZED = False
 
+
 def warn_uninitialize():
     log = logging.getLogger()
     global WARNED_UNINITIALIZED
