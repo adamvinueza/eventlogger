@@ -1,3 +1,6 @@
+'''
+ADAPTED FROM internal.py AT https://github.com/honeycombio/libhoney-py/
+'''
 def default(obj):
     try:
         return str(obj)

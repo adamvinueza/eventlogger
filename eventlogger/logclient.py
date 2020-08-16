@@ -1,3 +1,6 @@
+'''
+ADAPTED FROM Client class AT https://github.com/honeycombio/libhoney-py/
+'''
 import logging
 
 LOGLEVELS = [
@@ -9,6 +12,7 @@ LOGLEVELS = [
 ]
 
 class LogClient(object):
+    '''Manages logging of events. '''
     def __init__(self, logger=None):
         if logger is None:
             logger = logging.getLogger()

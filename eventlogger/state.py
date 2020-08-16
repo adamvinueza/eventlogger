@@ -1,3 +1,6 @@
+'''
+ADAPTED FROM state.py AT https://github.com/honeycombio/libhoney-py/
+'''
 import logging
 
 CLIENT = None

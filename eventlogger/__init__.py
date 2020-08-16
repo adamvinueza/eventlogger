@@ -1,3 +1,6 @@
+'''
+ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
+'''
 import eventlogger.state as state
 from eventlogger.event import Event
 

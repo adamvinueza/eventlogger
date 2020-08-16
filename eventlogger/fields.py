@@ -1,8 +1,12 @@
 import json
 from eventlogger import json_handler
+'''
+ADAPTED FROM FieldsHolder CLASS AT https://github.com/honeycombio/libhoney-py/
+'''
 
 
 class Fields:
+    '''A field that can be logged.'''
     def __init__(self):
         self._data = {}
 
