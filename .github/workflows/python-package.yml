@@ -38,5 +38,4 @@ jobs:
       run: echo $GITHUB_WORKSPACE
     - name: Test with pytest
       run: |
-        pytest 
-      working-directory: ..
+        pytest --rootdir=..
