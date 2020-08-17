@@ -38,6 +38,7 @@ jobs:
       run: echo $GITHUB_WORKSPACE
     - name: Test with pytest
       run: |
-        pytest --rootdir=$WORKING_DIR
+        cd $WORKING_DIR
+        pytest 
       env:
         WORKING_DIR: $GITHUB_WORKSPACE/..
