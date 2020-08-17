@@ -38,7 +38,5 @@ jobs:
       run: echo $GITHUB_WORKSPACE
     - name: Test with pytest
       run: |
-        cd $WORKING_DIR
+        cd ..
         pytest 
-      env:
-        WORKING_DIR: $GITHUB_WORKSPACE/..
