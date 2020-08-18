@@ -3,6 +3,7 @@ ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
 '''
 import eventlogger.state as state
 from eventlogger.logclient import LogClient
+from eventlogger.event import Event
 
 
 def init(logger=None):
