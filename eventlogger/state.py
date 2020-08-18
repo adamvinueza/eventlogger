@@ -1,13 +1,13 @@
-'''
+"""
 ADAPTED FROM state.py AT https://github.com/honeycombio/libhoney-py/
-'''
+"""
 import logging
 
 CLIENT = None
 WARNED_UNINITIALIZED = False
 
 
-def warn_uninitialize():
+def warn_uninitialized():
     log = logging.getLogger()
     global WARNED_UNINITIALIZED
     if not WARNED_UNINITIALIZED:

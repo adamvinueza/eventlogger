@@ -1,6 +1,8 @@
 import unittest
 
 import eventlogger.logclient as logclient
+import logging
+from unittest.mock import patch
 
 
 # patch the logger
@@ -21,5 +23,9 @@ class TestClient(unittest.TestCase):
         c.add(fld)
         self.assertEqual(c.fields._data, fld)
 
-    def test_noop(self):
-        self.assertTrue(True)
+    @patch('eventlogger.logclient.logging')
+    def test_send(self, mock_logging):
+        msg = "hello!"
+        c = logclient.LogClient(mock_logging)
+        c.send(msg, logging.INFO)
+        self.assertTrue(mock_logging.log.called)
