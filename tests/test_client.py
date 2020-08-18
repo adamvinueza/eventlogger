@@ -20,3 +20,6 @@ class TestClient(unittest.TestCase):
         c = logclient.LogClient()
         c.add(fld)
         self.assertEqual(c.fields._data, fld)
+
+    def test_noop(self):
+        self.assertTrue(True)
