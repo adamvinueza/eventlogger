@@ -8,4 +8,4 @@ def default(obj):
     try:
         return str(obj)
     except Exception:
-        return 'eventlogger was unable to serialize value'
+        return 'libevent was unable to serialize value'

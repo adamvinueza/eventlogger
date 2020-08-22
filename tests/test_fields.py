@@ -1,5 +1,5 @@
 import unittest
-from eventlogger.fields import Fields
+from libevent.fields import Fields
 
 
 class TestFields(unittest.TestCase):
