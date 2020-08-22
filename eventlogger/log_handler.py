@@ -1,10 +1,8 @@
 import logging
 from typing import Optional
-import eventlogger.state as state
 import eventlogger.fields as fields
 from eventlogger.event import Event
 from eventlogger.handler import Handler
-from eventlogger.client import Client
 
 LOGLEVELS = [
     logging.DEBUG,
@@ -16,9 +14,8 @@ LOGLEVELS = [
 
 
 class LogHandler(Handler):
-    def __init__(self, client: Optional[Client] = None, logger: logging.Logger = None):
-        if client is None:
-            self.client = state.CLIENT
+    def __init__(self,
+                 logger: Optional[logging.Logger] = None):
         if logger is None:
             logger = logging.getLogger()
         self.logger = logger

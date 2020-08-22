@@ -1,3 +1,4 @@
+from __future__ import annotations
 from typing import Any, Dict, List, Optional
 from eventlogger.event import Event
 from eventlogger.handler import Handler
@@ -7,7 +8,7 @@ from eventlogger.log_handler import LogHandler
 
 class Client(object):
     """Manages sending of events."""
-    def __init__(self, handlers: Optional[List[Handler]] = None):
+    def __init__(self, handlers: Optional[List[Handler]] = None) -> None:
         if handlers is None:
             handlers = [LogHandler()]
         self.handlers = handlers

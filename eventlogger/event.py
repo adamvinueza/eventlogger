@@ -1,9 +1,7 @@
 import datetime
-import logging
 from typing import Any, Dict, Generator, Optional
 import eventlogger.state as state
 from contextlib import contextmanager
-from eventlogger.client import Client
 from eventlogger.fields import Fields
 """
 ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
@@ -12,11 +10,13 @@ ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
 
 class Event(object):
     """A collection of fields to be sent via a client."""
+    # Although initialization takes an eventlogger.client.Client instance,
+    # we leave the type as Any to avoid a circular import.
     def __init__(self,
                  data: Optional[Dict] = None,
                  fields: Fields = Fields(),
-                 client: Optional[Client] = None):
-        """Constructor. Should not be called """
+                 client: Optional[Any] = None):
+        """Constructor. Should be called only by libevent.new_event()."""
         self.client = client
         self._fields = Fields()
         if self.client:

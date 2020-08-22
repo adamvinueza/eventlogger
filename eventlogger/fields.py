@@ -15,14 +15,14 @@ class Fields:
     def __init__(self):
         self._data = {}
 
-    def __add__(self, other: Fields) -> Fields:
+    def __add__(self, other: Any) -> Fields:
         self._data.update(other.get_data())
         return self
 
-    def __eq__(self, other: Fields) -> bool:
+    def __eq__(self, other: Any) -> bool:
         return self._data == other.get_data()
 
-    def __ne__(self, other: Fields) -> bool:
+    def __ne__(self, other: Any) -> bool:
         return not self.__eq__(other)
 
     def __getitem__(self, key: str) -> Any:

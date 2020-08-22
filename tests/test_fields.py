@@ -1,6 +1,6 @@
-import logging
 import unittest
 from eventlogger.fields import Fields
+
 
 class TestFields(unittest.TestCase):
     def test_init(self):
@@ -20,10 +20,10 @@ class TestFields(unittest.TestCase):
         f.add(field_map)
         self.assertEqual(field_map, f.get_data())
 
-    def test_add_nondict(self):
+    def test_add_with_int(self):
         f = Fields()
         with self.assertRaises(TypeError) as context:
-            f.add(17)
+            f.add(17) # noqa
         self.assertEqual('add requires a dict-like argument',
                          str(context.exception))
 
@@ -48,4 +48,3 @@ class TestFields(unittest.TestCase):
     def test_is_empty(self):
         f = Fields()
         self.assertTrue(f.is_empty())
-
