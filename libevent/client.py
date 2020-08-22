@@ -1,9 +1,9 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional
-from eventlogger.event import Event
-from eventlogger.handler import Handler
-from eventlogger.fields import Fields
-from eventlogger.log_handler import LogHandler
+from libevent.event import Event
+from libevent.handler import Handler
+from libevent.fields import Fields
+from libevent.log_handler import LogHandler
 
 
 class Client(object):

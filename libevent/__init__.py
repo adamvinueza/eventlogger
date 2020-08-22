@@ -3,18 +3,18 @@ ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
 """
 from __future__ import annotations
 from typing import Any, Dict, List, Optional
-import eventlogger.state as state
-from eventlogger.client import Client
-from eventlogger.handler import Handler
-from eventlogger.log_handler import LogHandler
-from eventlogger.event import Event
+import libevent.state as state
+from libevent.client import Client
+from libevent.handler import Handler
+from libevent.log_handler import LogHandler
+from libevent.event import Event
 
 """
 Sample usage:
 
-    eventlogger.init()
+    libevent.init()
     # ...
-    evt = eventlogger.new_event()
+    evt = libevent.new_event()
     evt.add_field(...)
     # ...
     evt.send()

@@ -1,8 +1,8 @@
 import logging
 from typing import Optional
-import eventlogger.fields as fields
-from eventlogger.event import Event
-from eventlogger.handler import Handler
+import libevent.fields as fields
+from libevent.event import Event
+from libevent.handler import Handler
 
 LOGLEVELS = [
     logging.DEBUG,

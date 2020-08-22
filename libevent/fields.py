@@ -1,7 +1,7 @@
 from __future__ import annotations
 import json
 from typing import Any, Dict
-import eventlogger.json_serializer as json_serializer
+import libevent.json_serializer as json_serializer
 """
 ADAPTED FROM FieldsHolder CLASS AT https://github.com/honeycombio/libhoney-py/
 """

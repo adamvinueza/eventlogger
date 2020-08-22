@@ -1,5 +1,5 @@
 import abc
-from eventlogger.event import Event
+from libevent.event import Event
 
 
 class Handler(metaclass=abc.ABCMeta):
