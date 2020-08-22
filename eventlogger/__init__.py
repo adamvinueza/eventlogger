@@ -1,31 +1,45 @@
 """
 ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
 """
-import logging
+from __future__ import annotations
+from typing import Any, Dict, List, Optional
 import eventlogger.state as state
-from eventlogger.logclient import LogClient
+from eventlogger.client import Client
+from eventlogger.handler import Handler
+from eventlogger.log_handler import LogHandler
 from eventlogger.event import Event
 
+"""
+Sample usage:
 
-def init(logger=None):
-    if logger is None:
-        logger = logging.getLogger()
-    state.CLIENT = LogClient(logger)
+    eventlogger.init()
+    # ...
+    evt = eventlogger.new_event()
+    evt.add_field(...)
+    # ...
+    evt.send()
+"""
 
 
-def add_field(name, val):
+def init(handlers: Optional[List[Handler]] = None) -> None:
+    if handlers is None:
+        handlers = [LogHandler()]
+    state.CLIENT = Client(handlers)
+
+
+def add_field(name: str, val: Any) -> None:
     if state.CLIENT is None:
         state.warn_uninitialized()
         return
     state.CLIENT.add_field(name, val)
 
 
-def add(data):
+def add(data: Dict) -> None:
     if state.CLIENT is None:
         state.warn_uninitialized()
         return
     state.CLIENT.add(data)
 
 
-def new_event(data=None):
-    return Event(data, state.CLIENT)
+def new_event(data: Optional[Dict] = None) -> Event:
+    return Event(data)

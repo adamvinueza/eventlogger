@@ -7,7 +7,7 @@ CLIENT = None
 WARNED_UNINITIALIZED = False
 
 
-def warn_uninitialized():
+def warn_uninitialized() -> None:
     log = logging.getLogger()
     global WARNED_UNINITIALIZED
     if not WARNED_UNINITIALIZED:
