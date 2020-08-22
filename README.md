@@ -1,7 +1,7 @@
-# EventLogger
+# libevent
 
-Logs events to the default logger. Suitable for use in applications monitored
-via AWS Cloudwatch.
+Writes events using handlers. By default, uses a simple logging.Logger, suitable
+for writing events to AWS CloudWatch.
 
 This library is a very, very streamlined version of Honeycomb's `libhoney`
 Python SDK. I wrote it mostly as an exercise to teach myself how to build an
