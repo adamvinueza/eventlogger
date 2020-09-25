@@ -2,12 +2,14 @@
 ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
 """
 from __future__ import annotations
+
 from typing import Any, Dict, List, Optional
+
 import libevent.state as state
 from libevent.client import Client
+from libevent.event import Event
 from libevent.handler import Handler
 from libevent.log_handler import LogHandler
-from libevent.event import Event
 
 """
 Sample usage:
