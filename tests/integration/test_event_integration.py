@@ -26,7 +26,8 @@ def add(x, y):
 
 class TestEventIntegration(TestCase):
     def setUp(self):
-        libevent.init(handlers=[LogHandler.default_handler(filename="integration_test_log.json")])
+        lh = LogHandler.default_handler(filename="integration_test_log.json")
+        libevent.init(handlers=[lh])
 
     def test_send(self):
         add(1, 2)

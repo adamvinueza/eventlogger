@@ -21,7 +21,9 @@ class LogHandler(Handler):
         self.logger = logger
 
     @staticmethod
-    def default_handler(name: str = None, filename: str = None, level: int = -1) -> Handler:
+    def default_handler(name: str = None,
+                        filename: str = None,
+                        level: int = -1) -> Handler:
         if name:
             logger = logging.getLogger(name)
         else:
