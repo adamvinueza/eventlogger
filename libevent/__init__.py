@@ -3,7 +3,8 @@ ADAPTED FROM __init__.py AT https://github.com/honeycombio/libhoney-py/
 """
 from __future__ import annotations
 
-from typing import Any, Dict, List, Optional
+from datetime import datetime
+from typing import Any, Callable, Dict, List, Optional
 
 import libevent.state as state
 from libevent.client import Client
@@ -45,5 +46,10 @@ def add(data: Dict) -> None:
     state.CLIENT.add(data)
 
 
-def new_event(data: Optional[Dict] = None) -> Event:
-    return Event(data=data, client=state.CLIENT)
+def new_event(data: Optional[Dict] = None,
+              calling_func: Callable = None) -> Event:
+    evt = Event(data=data, client=state.CLIENT)
+    evt.add_field('timestamp', datetime.now())
+    if calling_func:
+        evt.add_field('func_name', calling_func.__name__)
+    return evt
