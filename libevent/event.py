@@ -10,6 +10,9 @@ ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
 
 class Event(object):
     """A collection of fields to be sent via a client."""
+
+    ELAPSED_MS_KEY: str = 'elapsed_ms'
+
     # Although initialization takes an libevent.client.Client instance,
     # we leave the type as Any to avoid a circular import.
     def __init__(self,
@@ -42,7 +45,14 @@ class Event(object):
         self.client.send(self)
 
     @contextmanager
-    def timer(self, name: str = 'elapsed_ms') -> Generator:
+    def timer(self, name: str = ELAPSED_MS_KEY) -> Generator:
+        """timer is a context for timing (in milliseconds) a function call.
+         Example:
+             ev = Event()
+             with ev.timer("database_dur_ms"):
+                 do_database_work()
+            will add a field (name, duration) indicating running time
+            do_database_work()"""
         start = datetime.datetime.now()
         yield
         duration = datetime.datetime.now() - start
