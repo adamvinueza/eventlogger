@@ -27,6 +27,8 @@ def init(handlers: Optional[List[Handler]] = None) -> None:
     if handlers is None:
         handlers = [LogHandler()]
     state.CLIENT = Client(handlers)
+    # Set to False to not spam handlers with warnings if we call init late.
+    state.WARNED_UNINITIALIZED = False
 
 
 def add_field(name: str, val: Any) -> None:
@@ -44,4 +46,4 @@ def add(data: Dict) -> None:
 
 
 def new_event(data: Optional[Dict] = None) -> Event:
-    return Event(data)
+    return Event(data=data, client=state.CLIENT)

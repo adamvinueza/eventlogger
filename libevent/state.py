@@ -14,5 +14,5 @@ def warn_uninitialized() -> None:
     log = logging.getLogger()
     global WARNED_UNINITIALIZED
     if not WARNED_UNINITIALIZED:
-        log.warn("global libevent method used before initialization")
+        log.warning("global libevent method used before initialization")
         WARNED_UNINITIALIZED = True
