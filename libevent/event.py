@@ -56,7 +56,7 @@ class Event(object):
         start = datetime.datetime.now()
         yield
         duration = datetime.datetime.now() - start
-        self.add_field(name, duration.total_seconds() * 1000)
+        self.add_field(name, round(duration.total_seconds() * 1000, 4))
 
     def __str__(self) -> str:
         return str(self._fields)
