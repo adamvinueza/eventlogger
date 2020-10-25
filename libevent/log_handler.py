@@ -1,5 +1,7 @@
 import logging
 from typing import Optional, Any
+import libevent
+import libevent.state as state
 import libevent.fields as fields
 from libevent.event import Event
 from libevent.handler import Handler
@@ -24,6 +26,8 @@ class LogHandler(Handler):
     def with_handler(name: str = None,
                      handler: Any = logging.StreamHandler,
                      level: int = logging.INFO) -> Handler:
+        if not name and libevent.APP_ID_KEY in state.CLIENT:  # type: ignore
+            name = state.CLIENT[libevent.APP_ID_KEY]  # type: ignore
         logger = logging.getLogger(name)
         logger.setLevel(level)
         handler.setLevel(level)

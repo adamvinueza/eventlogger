@@ -25,6 +25,7 @@ Sample usage:
     evt.send()
 """
 
+APP_ID_KEY = "applicationId"
 EVENT_ID_KEY = "eventId"
 PARENT_ID_KEY = "parentId"
 TIMESTAMP_KEY = "timestamp"
@@ -35,7 +36,7 @@ def init(app_id: str = None, handlers: Optional[List[Handler]] = None) -> None:
         handlers = [LogHandler()]
     state.CLIENT = Client(handlers)
     if app_id:
-        state.CLIENT.add_field("applicationId", app_id)
+        state.CLIENT.add_field(APP_ID_KEY, app_id)
     state.CLIENT.add_field("initTimestamp", datetime.utcnow())
     # Set to False to not spam handlers with warnings if we call init late.
     state.WARNED_UNINITIALIZED = False
