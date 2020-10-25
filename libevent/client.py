@@ -14,6 +14,12 @@ class Client(object):
         self.handlers = handlers
         self.fields = Fields()
 
+    def __getitem__(self, key):
+        return self.fields[key]
+
+    def __contains__(self, key):
+        return key in self.fields
+
     def add_field(self, name: str, value: Any) -> None:
         """Add a global field."""
         self.fields.add_field(name, value)

@@ -1,4 +1,3 @@
-from datetime import datetime
 from unittest import TestCase
 from libevent import state, LogHandler
 from io import StringIO
