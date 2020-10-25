@@ -104,3 +104,15 @@ class TestEvent(TestCase):
         with evt.timer():
             do_nothing()
         self.assertEqual(1000, evt[libevent.event.Event.ELAPSED_MS_KEY])
+
+    @patch('libevent.datetime')
+    def test_event_chain(self, mock_datetime):
+        mock_datetime.now = TimeFaker().fake_now
+        libevent.init()
+        parent = libevent.new_event(self.evt._fields.get_data())
+        child = libevent.event_chain(parent=parent)
+        self.assertTrue(libevent.PARENT_ID_KEY in child)
+        parent_ts = parent[libevent.TIMESTAMP_KEY]
+        child_ts = child[libevent.TIMESTAMP_KEY]
+        duration = (child_ts - parent_ts).total_seconds()
+        self.assertEqual(1.0, duration)

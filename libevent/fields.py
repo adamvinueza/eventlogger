@@ -28,6 +28,9 @@ class Fields:
     def __getitem__(self, key: str) -> Any:
         return self._data[key]
 
+    def __contains__(self, key: str) -> bool:
+        return key in self._data
+
     def add_field(self, name: str, val: Any) -> None:
         self._data[name] = val
 

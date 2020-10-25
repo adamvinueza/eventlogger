@@ -1,5 +1,5 @@
 import logging
-from typing import Optional
+from typing import Optional, Any
 import libevent.fields as fields
 from libevent.event import Event
 from libevent.handler import Handler
@@ -21,21 +21,24 @@ class LogHandler(Handler):
         self.logger = logger
 
     @staticmethod
+    def with_handler(name: str = None,
+                     handler: Any = logging.StreamHandler,
+                     level: int = logging.INFO) -> Handler:
+        logger = logging.getLogger(name)
+        logger.setLevel(level)
+        handler.setLevel(level)
+        logger.addHandler(handler)
+        return LogHandler(logger)
+
+    @staticmethod
     def default_handler(name: str = None,
                         filename: str = None,
-                        level: int = -1) -> Handler:
-        if name:
-            logger = logging.getLogger(name)
-        else:
-            logger = logging.getLogger()
-        if level not in LOGLEVELS:
-            level = logging.INFO
-        logger.setLevel(level)
+                        level: int = logging.INFO) -> Handler:
         if filename:
-            lh = logging.FileHandler(filename)
-            lh.setLevel(level)
-            logger.addHandler(lh)
-        return LogHandler(logger)
+            return LogHandler.with_handler(name,
+                                           logging.FileHandler(filename),
+                                           level)
+        return LogHandler.with_handler(name, logging.StreamHandler(), level)
 
     @staticmethod
     def set_level(evt: Event, level: int) -> None:
