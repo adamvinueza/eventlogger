@@ -97,7 +97,7 @@ class TestEvent(TestCase):
         def do_nothing():
             pass
 
-        mock_datetime.datetime.now = TimeFaker().fake_now
+        mock_datetime.datetime.utcnow = TimeFaker().fake_now
         libevent.init()
         libevent.new_event(self.evt._fields.get_data())
         evt = self.evt
@@ -107,7 +107,7 @@ class TestEvent(TestCase):
 
     @patch('libevent.datetime')
     def test_event_chain(self, mock_datetime):
-        mock_datetime.now = TimeFaker().fake_now
+        mock_datetime.utcnow = TimeFaker().fake_now
         libevent.init()
         parent = libevent.new_event(self.evt._fields.get_data())
         child = libevent.event_chain(parent=parent)
