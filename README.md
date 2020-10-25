@@ -10,3 +10,5 @@ come in handy for applications as well.
 
 To accord with the `libhoney` license, the library source files have been
 prominently documented as having been adapted from Honeycomb source files.
+
+Adding this line for giggles.
