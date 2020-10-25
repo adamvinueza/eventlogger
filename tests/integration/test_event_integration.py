@@ -1,7 +1,8 @@
 from datetime import datetime
 from unittest import TestCase
-from libevent.log_handler import LogHandler
+from libevent import state, LogHandler
 import libevent
+import os
 
 
 def get_func_event(f):
@@ -25,10 +26,21 @@ def add(x, y):
 
 
 class TestEventIntegration(TestCase):
+
     def setUp(self):
-        lh = LogHandler.default_handler(filename="integration_test_log.json")
+        self.logfile_path = "integration_test_log.json"
+        lh = LogHandler.default_handler(filename=self.logfile_path)
         libevent.init(handlers=[lh])
+
+    def tearDown(self):
+        os.remove(self.logfile_path)
+
+    def test_init(self):
+        self.assertFalse(state.WARNED_UNINITIALIZED)
 
     def test_send(self):
         add(1, 2)
         add(3, 4)
+        self.assertTrue(os.path.exists(self.logfile_path))
+        line_count = sum(1 for line in open(self.logfile_path))
+        self.assertEqual(2, line_count)
