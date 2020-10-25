@@ -10,7 +10,6 @@ import os
 def get_func_event(f):
     evt = libevent.new_event()
     evt.add_field('func_name', f.__name__)
-    evt.add_field('timestamp', datetime.now().isoformat())
     return evt
 
 
@@ -67,5 +66,4 @@ class TestEventConsoleLogger(TestCase):
         self.stream.seek(0)
         lines = sum(1 for _ in self.stream)
         self.stream.seek(0)
-        print(self.stream.getvalue())
         self.assertEqual(2, lines)

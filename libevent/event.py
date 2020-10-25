@@ -56,9 +56,9 @@ class Event(object):
                  do_database_work()
             will add a field (name, duration) indicating running time
             do_database_work()"""
-        start = datetime.datetime.now()
+        start = datetime.datetime.utcnow()
         yield
-        duration = datetime.datetime.now() - start
+        duration = datetime.datetime.utcnow() - start
         self.add_field(name, round(duration.total_seconds() * 1000, 4))
 
     def __str__(self) -> str:
