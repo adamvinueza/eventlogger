@@ -32,6 +32,9 @@ class Event(object):
     def __getitem__(self, key: str) -> Any:
         return self._fields[key]
 
+    def __contains__(self, key: str) -> bool:
+        return key in self._fields
+
     def add_field(self, key: str, value: Any) -> None:
         self.add({key: value})
 
