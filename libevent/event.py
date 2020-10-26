@@ -63,3 +63,6 @@ class Event(object):
 
     def __str__(self) -> str:
         return str(self._fields)
+
+    def to_dict(self) -> dict:
+        return self._fields.get_data()
