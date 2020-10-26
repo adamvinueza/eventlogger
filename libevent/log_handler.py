@@ -44,16 +44,6 @@ class LogHandler(Handler):
                                            level)
         return LogHandler.with_handler(name, logging.StreamHandler(), level)
 
-    @staticmethod
-    def set_level(evt: Event, level: int) -> None:
-        if level not in LOGLEVELS:
-            evt.add_field(
-                fields.ERROR,
-                f"attempt to set unrecognized level: {level}"
-            )
-            level = logging.INFO
-        evt.add_field(fields.LOG_LEVEL, level)
-
     def send(self, evt: Event) -> None:
         try:
             level = evt[fields.LOG_LEVEL]
