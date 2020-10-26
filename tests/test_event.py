@@ -110,7 +110,7 @@ class TestEvent(TestCase):
         mock_datetime.utcnow = TimeFaker().fake_now
         libevent.init()
         parent = libevent.new_event(self.evt._fields.get_data())
-        child = libevent.event_chain(parent=parent)
+        child = libevent.new_event(self.evt._fields.get_data(), parent=parent)
         self.assertTrue(libevent.PARENT_ID_KEY in child)
         parent_ts = parent[libevent.TIMESTAMP_KEY]
         child_ts = child[libevent.TIMESTAMP_KEY]

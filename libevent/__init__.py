@@ -57,20 +57,15 @@ def add(data: Dict) -> None:
 
 
 def new_event(data: Optional[Dict] = None,
-              calling_func: Callable = None) -> Event:
+              calling_func: Callable = None,
+              parent: Event = None) -> Event:
     evt = Event(data=data, client=state.CLIENT)
     evt.add_field(TIMESTAMP_KEY, datetime.utcnow())
     evt.add_field(EVENT_ID_KEY, secrets.token_hex(8))
     if calling_func:
         evt.add_field('func_name', calling_func.__name__)
-    return evt
-
-
-def event_chain(data: Optional[Dict] = None,
-                calling_func: Callable = None,
-                parent: Event = None):
-    evt = new_event(data, calling_func)
     if parent:
         if EVENT_ID_KEY in parent:
             evt.add_field(PARENT_ID_KEY, parent[EVENT_ID_KEY])
     return evt
+
