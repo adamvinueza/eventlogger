@@ -6,14 +6,14 @@ import logging
 import os
 
 
-def get_func_event(f):
-    evt = libevent.new_event()
+def get_func_event(f, call_id=None):
+    evt = libevent.new_event(parent_id=call_id)
     evt.add_field('func_name', f.__name__)
     return evt
 
 
-def add(x, y):
-    evt = get_func_event(add)
+def add(x, y, call_id):
+    evt = get_func_event(f=add, call_id=call_id)
     evt.add_field('params', {
         'x': x,
         'y': y
@@ -29,8 +29,12 @@ class TestEventFileLogger(TestCase):
 
     def setUp(self):
         self.logfile_path = "integration_test_log.json"
-        lh = LogHandler.default_handler(filename=self.logfile_path)
-        libevent.init(app_id="test_event", handlers=[lh])
+        app_id = "test_event"
+        lh = LogHandler.with_handler(
+            name=app_id,
+            handler=logging.FileHandler(filename=self.logfile_path)
+        )
+        libevent.init(app_id=app_id, handlers=[lh])
 
     def tearDown(self):
         os.remove(self.logfile_path)
@@ -39,11 +43,15 @@ class TestEventFileLogger(TestCase):
         self.assertFalse(state.WARNED_UNINITIALIZED)
 
     def test_send(self):
-        add(1, 2)
-        add(3, 4)
+        evt = libevent.new_event()
+        evt.add_field('func_name', self.test_send.__name__)
+        add(1, 2, evt.id)
+        add(3, 4, evt.id)
+        evt.send()
         self.assertTrue(os.path.exists(self.logfile_path))
-        line_count = sum(1 for line in open(self.logfile_path))
-        self.assertEqual(2, line_count)
+        with open(self.logfile_path) as reader:
+            line_count = sum(1 for line in reader)
+        self.assertEqual(3, line_count)
 
 
 class TestEventConsoleLogger(TestCase):
@@ -60,9 +68,12 @@ class TestEventConsoleLogger(TestCase):
         self.assertFalse(state.WARNED_UNINITIALIZED)
 
     def test_send(self):
-        add(1, 2)
-        add(3, 4)
+        evt = libevent.new_event()
+        evt.add_field('func_name', self.test_send.__name__)
+        add(1, 2, evt.id)
+        add(3, 4, evt.id)
+        evt.send()
         self.stream.seek(0)
         lines = sum(1 for _ in self.stream)
         self.stream.seek(0)
-        self.assertEqual(2, lines)
+        self.assertEqual(3, lines)

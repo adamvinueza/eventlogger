@@ -6,9 +6,9 @@ from __future__ import annotations
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional
 import secrets
-
 import libevent.state as state
 from libevent.client import Client
+from libevent.constants import APP_ID_KEY, PARENT_ID_KEY, TIMESTAMP_KEY
 from libevent.event import Event
 from libevent.handler import Handler
 from libevent.log_handler import LogHandler
@@ -25,18 +25,14 @@ Sample usage:
     evt.send()
 """
 
-APP_ID_KEY = "applicationId"
-EVENT_ID_KEY = "eventId"
-PARENT_ID_KEY = "parentId"
-TIMESTAMP_KEY = "timestamp"
 
-
-def init(app_id: str = None, handlers: Optional[List[Handler]] = None) -> None:
-    if handlers is None:
-        handlers = [LogHandler()]
+def init(app_id: str = None, handlers: List[Handler] = None) -> None:
+    if not app_id:
+        app_id = secrets.token_hex(16).upper()
+    if not handlers:
+        handlers = [LogHandler.with_handler(name=app_id)]
     state.CLIENT = Client(handlers)
-    if app_id:
-        state.CLIENT.add_field(APP_ID_KEY, app_id)
+    state.CLIENT.add_field(APP_ID_KEY, app_id)
     state.CLIENT.add_field("initTimestamp", datetime.utcnow())
     # Set to False to not spam handlers with warnings if we call init late.
     state.WARNED_UNINITIALIZED = False
@@ -58,14 +54,12 @@ def add(data: Dict) -> None:
 
 def new_event(data: Optional[Dict] = None,
               calling_func: Callable = None,
-              parent: Event = None) -> Event:
+              parent_id: str = None) -> Event:
     evt = Event(data=data, client=state.CLIENT)
     evt.add_field(TIMESTAMP_KEY, datetime.utcnow())
-    evt.add_field(EVENT_ID_KEY, secrets.token_hex(8))
     if calling_func:
         evt.add_field('func_name', calling_func.__name__)
-    if parent:
-        if EVENT_ID_KEY in parent:
-            evt.add_field(PARENT_ID_KEY, parent[EVENT_ID_KEY])
+    if parent_id:
+        evt.add_field(PARENT_ID_KEY, parent_id)
     return evt
 
