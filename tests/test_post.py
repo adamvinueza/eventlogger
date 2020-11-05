@@ -19,5 +19,3 @@ class TestPostHandler(TestCase):
             url,
             json=evt.to_dict()
         )
-
-

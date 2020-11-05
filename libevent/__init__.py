@@ -62,4 +62,3 @@ def new_event(data: Optional[Dict] = None,
     if parent_id:
         evt.add_field(PARENT_ID_KEY, parent_id)
     return evt
-

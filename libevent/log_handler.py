@@ -1,7 +1,5 @@
 import logging
-from typing import Optional, Any
-import libevent
-import libevent.state as state
+from typing import Any
 import libevent.fields as fields
 from libevent.event import Event
 from libevent.handler import Handler
