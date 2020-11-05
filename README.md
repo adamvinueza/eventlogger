@@ -11,7 +11,9 @@ come in handy for applications as well.
 To accord with the `libhoney` license, the library source files have been
 prominently documented as having been adapted from Honeycomb source files.
 
-## Sample Usage
+## Usage
+
+## Sample
 
 ```python
 #!/usr/bin/env python
@@ -48,9 +50,12 @@ if __name__ == '__main__':
     lh = libevent.LogHandler.default_handler(name='myapp',
                                              level=logging.DEBUG)
     libevent.init([lh])
-    e = libevent.new_event()
-    with e.timer():
-        file_of_interest = sys.argv[1]
-        print(get_line_count(file_of_interest))
-    e.send()
+    evt = libevent.new_event()
+    try:
+        with evt.timer():
+            file_of_interest = sys.argv[1]
+            print(get_line_count(file_of_interest))
+    except IOError as err:
+        evt.add_field(libevent.fields.ERROR, str(err))
+    evt.send()
 ```
