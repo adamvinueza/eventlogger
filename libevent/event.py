@@ -1,5 +1,6 @@
 import datetime
 from typing import Any, Dict, Generator, Optional
+from libevent.client import Client
 import libevent.state as state
 import secrets
 from contextlib import contextmanager
@@ -15,12 +16,10 @@ class Event(object):
 
     ELAPSED_MS_KEY: str = 'elapsed_ms'
 
-    # Although initialization takes an libevent.client.Client instance,
-    # we leave the type as Any to avoid a circular import.
     def __init__(self,
                  data: Optional[Dict] = None,
                  fields: Fields = Fields(),
-                 client: Optional[Any] = None):
+                 client: Client = None):
         """Constructor. Should be called only by libevent.new_event()."""
         self.client = client
         self._fields = Fields()

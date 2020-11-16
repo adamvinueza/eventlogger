@@ -46,10 +46,9 @@ def get_line_count(file_path):
     return line_count
 
 if __name__ == '__main__':
-    # we want to log to stdout
-    lh = libevent.LogHandler.default_handler(name='myapp',
-                                             level=logging.DEBUG)
-    libevent.init([lh])
+    # By default, creates a handler that sends events as serialized JSON
+    # to a logger that logs to stderr.
+    libevent.init(app_id="my_app")
     evt = libevent.new_event()
     try:
         with evt.timer():
