@@ -8,7 +8,7 @@ from typing import Any, Callable, Dict, List, Optional
 import secrets
 import libevent.state as state
 from libevent.client import Client
-from libevent.constants import APP_ID_KEY, PARENT_ID_KEY, TIMESTAMP_KEY
+from libevent.constants import APP_ID_KEY, PARENT_ID_KEY, TIMESTAMP_KEY, FUNCTION_KEY
 from libevent.event import Event
 from libevent.handler import Handler
 from libevent.log_handler import LogHandler
@@ -58,7 +58,7 @@ def new_event(data: Optional[Dict] = None,
     evt = Event(data=data, client=state.CLIENT)
     evt.add_field(TIMESTAMP_KEY, datetime.utcnow())
     if calling_func:
-        evt.add_field('func_name', calling_func.__name__)
+        evt.add_field(FUNCTION_KEY, calling_func.__name__)
     if parent_id:
         evt.add_field(PARENT_ID_KEY, parent_id)
     return evt

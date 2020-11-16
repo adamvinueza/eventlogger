@@ -14,7 +14,7 @@ ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
 class Event(object):
     """A collection of fields to be sent via a client."""
 
-    ELAPSED_MS_KEY: str = 'elapsed_ms'
+    ELAPSED_MS_KEY: str = 'elapsedMs'
 
     def __init__(self,
                  data: Optional[Dict] = None,
