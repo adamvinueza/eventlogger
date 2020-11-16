@@ -1,9 +1,10 @@
 from unittest import TestCase
 from unittest.mock import patch
-from libevent.event import Event
 from libevent.fields import Fields
+from libevent.event import Event
+import libevent
+import libevent.state as state
 import datetime
-import libevent.state
 import logging
 
 
@@ -58,28 +59,18 @@ class TestEvent(TestCase):
     def test_send_uninitialized(self, mock_logger):
         evt = self.evt
         evt.send()
-        self.assertEqual(True, libevent.state.WARNED_UNINITIALIZED)
+        self.assertEqual(True, state.WARNED_UNINITIALIZED)
         mock_logger.getLogger.assert_called_once()
 
     @patch('libevent.log_handler.logging')
     def test_send(self, mock_logger):
         libevent.init()
         evt = libevent.new_event(self.evt._fields.get_data())
-        evt.add_field(libevent.fields.LOG_LEVEL, logging.INFO)
+        mock_logger.getLogger().level = logging.INFO
         evt.send()
         self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
         mock_logger.getLogger().log.assert_called_once_with(logging.INFO,
                                                             str(evt))
-
-    @patch('libevent.log_handler.logging.getLogger')
-    def test_send_warn(self, mock_logging):
-        libevent.init()
-        evt = libevent.new_event(self.evt._fields.get_data())
-        evt.add_field(libevent.fields.LOG_LEVEL, logging.WARN)
-        evt.send()
-        self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
-        mock_logging.return_value.log.assert_called_once_with(logging.WARN,
-                                                              str(evt))
 
     @patch('libevent.log_handler.logging.getLogger')
     def test_send_default(self, mock_get_logger):

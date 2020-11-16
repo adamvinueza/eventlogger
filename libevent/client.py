@@ -1,12 +1,11 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional
-from libevent.event import Event
 from libevent.handler import Handler
-from libevent.fields import Fields
 from libevent.log_handler import LogHandler
+from libevent.fields import Fields
 
 
-class Client(object):
+class Client(Handler):
     """Manages sending of events."""
     def __init__(self, handlers: Optional[List[Handler]] = None) -> None:
         if handlers is None:
@@ -28,7 +27,7 @@ class Client(object):
         """Use a mappable object to add a global field."""
         self.fields.add(data)
 
-    def send(self, evt: Event) -> None:
+    def send(self, evt: Any) -> None:
         """Send the event using the handlers."""
         for handler in self.handlers:
             handler.send(evt)

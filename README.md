@@ -21,14 +21,19 @@ import sys
 import logging
 import libevent
 
-def get_line_count(file_path):
+def get_line_count(file_path, call_id):
     """
     The call below creates an event with the following fields:
     {
         "timestamp": <current_time_in_iso_format>,
-        "name": "get_line_count"
+        "function": "get_line_count"
+        "applicationId": "my_app",
+        "parentId": "{call_id}",
+        "eventId": <generated string identifier>
+        "elapsedMs": <elapsed call time, in milliseconds>,
+        "lineCount": <number of lines counted>
     }"""
-    evt = libevent.new_event()
+    evt = libevent.new_event(calling_func=get_line_count, parent_id=call_id)
     evt.add_field("file_path", file_path)
     with evt.timer():
         """
@@ -46,15 +51,14 @@ def get_line_count(file_path):
     return line_count
 
 if __name__ == '__main__':
-    # we want to log to stdout
-    lh = libevent.LogHandler.default_handler(name='myapp',
-                                             level=logging.DEBUG)
-    libevent.init([lh])
+    # By default, creates a handler that sends events as serialized JSON
+    # to a logger that logs to stderr.
+    libevent.init(app_id="my_app")
     evt = libevent.new_event()
     try:
         with evt.timer():
             file_of_interest = sys.argv[1]
-            print(get_line_count(file_of_interest))
+            print(get_line_count(file_of_interest, evt.id))
     except IOError as err:
         evt.add_field(libevent.fields.ERROR, str(err))
     evt.send()

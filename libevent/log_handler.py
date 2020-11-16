@@ -1,7 +1,5 @@
 import logging
 from typing import Any
-import libevent.fields as fields
-from libevent.event import Event
 from libevent.handler import Handler
 
 LOGLEVELS = [
@@ -38,9 +36,8 @@ class LogHandler(Handler):
         logger.addHandler(handler)
         return LogHandler(logger)
 
-    def send(self, evt: Event) -> None:
-        try:
-            level = evt[fields.LOG_LEVEL]
-        except KeyError:
-            level = self.logger.level
-        self.logger.log(level, str(evt))
+    def send(self, evt: Any) -> None:
+        """Sends the supplied event.
+        Strictly, anything can be an event. It is the responsibility of the
+        event being sent to be appropriately serializable."""
+        self.logger.log(self.logger.level, str(evt))
