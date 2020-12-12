@@ -11,8 +11,9 @@ CLIENT: Optional[libevent.client.Client] = None
 
 
 def warn_uninitialized() -> None:
-    log = logging.getLogger()
+    logger = logging.getLogger()
     global WARNED_UNINITIALIZED
     if not WARNED_UNINITIALIZED:
-        log.warning("global libevent method used before initialization")
+        logger.warning("global libevent method used before initialization")
         WARNED_UNINITIALIZED = True
+
