@@ -1,5 +1,13 @@
 APP_ID_KEY = "applicationId"
 EVENT_ID_KEY = "eventId"
-PARENT_ID_KEY = "parentId"
+INIT_TIMESTAMP_KEY = "applicationInitTimestamp"
+PARENT_ID_KEY = "parentEventId"
 TIMESTAMP_KEY = "timestamp"
-FUNCTION_KEY = "function"
+OPERATION_KEY = "operation"
+RETURN_VALUE_KEY = "returnValue"
+ERROR_KEY = "error"
+ARGS_KEY = "args"
+KWARGS_KEY = "kwargs"
+
+SPAN_ID_BYTES = 8
+TRACE_ID_BYTES = 16

@@ -19,6 +19,7 @@ class Event(object):
     def __init__(self,
                  data: Optional[Dict] = None,
                  fields: Fields = Fields(),
+                 event_id: str = None,
                  client: Client = None):
         """Constructor. Should be called only by libevent.new_event()."""
         self.client = client
@@ -29,7 +30,10 @@ class Event(object):
             data = {}
         self._fields.add(data)
         self._fields += fields
-        self.id = secrets.token_hex(8)
+        if event_id:
+            self.id = event_id
+        else:
+            self.id = secrets.token_hex(8)
         self.add_field(EVENT_ID_KEY, self.id)
 
     def __getitem__(self, key: str) -> Any:
@@ -43,6 +47,9 @@ class Event(object):
 
     def add(self, data: Dict) -> None:
         self._fields.add(data)
+
+    def fields(self) -> Dict:
+        return self._fields.get_data()
 
     def send(self) -> None:
         if self.client is None:
