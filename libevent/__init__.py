@@ -10,10 +10,8 @@ import libevent.constants as constants
 import libevent.state as state
 from libevent.client import Client
 from libevent.event import Event
-from libevent.fields import Fields
 from libevent.handler import Handler
 from libevent.log_handler import LogHandler
-from libevent.trace import Tracer
 
 
 """
@@ -26,8 +24,6 @@ Sample usage:
     # ...
     evt.send()
 """
-
-_GLOBAL_TRACER = None
 
 
 def init(app_id: str = None, handlers: List[Handler] = None) -> None:
@@ -67,15 +63,3 @@ def new_event(data: Optional[Dict] = None,
     if parent_id:
         evt.add_field(constants.PARENT_ID_KEY, parent_id)
     return evt
-
-
-def new_trace_id():
-    return secrets.token_hex(8)
-
-
-def get_tracer(auto: bool = True):
-    global _GLOBAL_TRACER
-    if not _GLOBAL_TRACER:
-        _GLOBAL_TRACER = Tracer(auto=auto)
-    return _GLOBAL_TRACER
-
