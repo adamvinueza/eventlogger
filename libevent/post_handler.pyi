@@ -1,4 +1,4 @@
-from libevent import Event
+from libevent.event import Event
 
 
 class PostHandler:
