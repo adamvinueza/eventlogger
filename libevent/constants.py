@@ -5,7 +5,6 @@ PARENT_ID_KEY = "parentEventId"
 TIMESTAMP_KEY = "timestamp"
 OPERATION_KEY = "operation"
 RETURN_VALUE_KEY = "returnValue"
-ERROR_KEY = "error"
 ARGS_KEY = "args"
 KWARGS_KEY = "kwargs"
 

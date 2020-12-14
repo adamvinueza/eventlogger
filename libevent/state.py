@@ -16,4 +16,3 @@ def warn_uninitialized() -> None:
     if not WARNED_UNINITIALIZED:
         logger.warning("global libevent method used before initialization")
         WARNED_UNINITIALIZED = True
-

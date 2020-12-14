@@ -1,4 +1,5 @@
 import logging
+import sys
 from typing import Any
 from libevent.handler import Handler
 
@@ -14,7 +15,8 @@ LOGLEVELS = [
 def default_logger(name: str = None,
                    level: int = logging.INFO) -> logging.Logger:
     logger = logging.getLogger(name)
-    handler = logging.StreamHandler()
+    # log to stdout by default
+    handler = logging.StreamHandler(sys.stdout)
     handler.setLevel(level)
     logger.setLevel(level)
     logger.addHandler(handler)
