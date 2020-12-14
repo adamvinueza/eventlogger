@@ -6,7 +6,7 @@ with open(os.path.join(current_dir, 'README.md')) as rdr:
     long_description = rdr.read()
 
 setup(name='libevent',
-      version='0.3.2',
+      version='0.3.3',
       description='Library for sending events',
       long_description=long_description,
       url='http://github.com/adamvinueza/libevent',
