@@ -1,0 +1,3 @@
+from typing import Any
+
+def default(obj: Any) -> str: ...

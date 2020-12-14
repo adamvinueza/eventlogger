@@ -14,6 +14,9 @@ setup(name='libevent',
       author_email='adamvinueza@pm.me',
       license='Apache 2.0',
       packages=['libevent'],
+      package_data = {
+          'libevent': ['py.typed']
+      },
       classifiers=[
           'Development Status :: 1 - Planning',
           'Intended Audience :: Developers',
