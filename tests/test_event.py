@@ -1,3 +1,4 @@
+from io import StringIO
 from unittest import TestCase
 from unittest.mock import patch
 from libevent.fields import Fields
@@ -5,7 +6,7 @@ from libevent.event import Event
 import libevent
 import libevent.state as state
 import datetime
-import logging
+import sys
 
 
 class TimeFaker(object):
@@ -29,6 +30,8 @@ class TimeFaker(object):
 class TestEvent(TestCase):
 
     def setUp(self):
+        self.stream = StringIO()
+        sys.stdout = self.stream
         self.data = {'field1': 'value1'}
         fields = Fields()
         fields.add_field('field2', 'value2')
@@ -62,25 +65,17 @@ class TestEvent(TestCase):
         self.assertEqual(True, state.WARNED_UNINITIALIZED)
         mock_logger.getLogger.assert_called_once()
 
-    @patch('libevent.log_handler.logging')
-    def test_send(self, mock_logger):
+    def test_send(self):
         libevent.init()
         evt = libevent.new_event(self.evt._fields.get_data())
-        mock_logger.getLogger().level = logging.INFO
         evt.send()
         self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
-        mock_logger.getLogger().log.assert_called_once_with(logging.INFO,
-                                                            str(evt))
 
-    @patch('libevent.log_handler.logging.getLogger')
-    def test_send_default(self, mock_get_logger):
+    def test_send_default(self):
         libevent.init()
-        mock_get_logger.return_value.level = logging.INFO
         evt = libevent.new_event(self.evt._fields.get_data())
         evt.send()
         self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
-        mock_get_logger.return_value.log.assert_called_once_with(logging.INFO,
-                                                                 str(evt))
 
     @patch('libevent.event.datetime')
     def test_timer(self, mock_datetime):
@@ -95,15 +90,3 @@ class TestEvent(TestCase):
             do_nothing()
         self.assertEqual(1000, evt[libevent.event.Event.ELAPSED_MS_KEY])
 
-    @patch('libevent.datetime')
-    def test_event_chain(self, mock_datetime):
-        mock_datetime.utcnow = TimeFaker().fake_now
-        libevent.init()
-        parent = libevent.new_event(self.evt._fields.get_data())
-        child = libevent.new_event(self.evt._fields.get_data(),
-                                   parent_id=parent.id)
-        self.assertTrue(libevent.constants.PARENT_ID_KEY in child)
-        parent_ts = parent[libevent.constants.TIMESTAMP_KEY]
-        child_ts = child[libevent.constants.TIMESTAMP_KEY]
-        duration = (child_ts - parent_ts).total_seconds()
-        self.assertEqual(1.0, duration)

@@ -1,10 +1,9 @@
 import abc
-from typing import Any
+from typing import Any, Protocol
 
 
-class Handler(metaclass=abc.ABCMeta):
+class Handler(Protocol):
 
-    @abc.abstractmethod
     def send(self, evt: Any) -> None:
         """Sends the supplied event.
         Strictly, anything can be an event. It is the responsibility of the

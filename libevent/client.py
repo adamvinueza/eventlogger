@@ -1,15 +1,16 @@
 from __future__ import annotations
 from typing import Any, Dict, List, Optional
 from libevent.handler import Handler
-from libevent.log_handler import LogHandler
+from libevent.stdout_handler import StdoutHandler
 from libevent.fields import Fields
 
 
 class Client(Handler):
-    """Manages sending of events."""
+
+    """Manages the sending of events."""
     def __init__(self, handlers: Optional[List[Handler]] = None) -> None:
         if handlers is None:
-            handlers = [LogHandler()]
+            handlers = [StdoutHandler()]
         self.handlers = handlers
         self.fields = Fields()
 

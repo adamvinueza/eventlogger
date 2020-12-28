@@ -1,8 +1,11 @@
 from typing import Any, Dict, List, Optional
 from libevent.handler import Handler
+from libevent.fields import Fields
 
 
 class Client:
+    fields: Fields
+    handlers: List[Handler]
     def __init__(self, handlers: Optional[List[Handler]] = None) -> None: ...
     def __getitem__(self, key: str) -> Any: ...
     def __contains__(self, key: str) -> bool: ...

@@ -28,8 +28,6 @@ def get_line_count(file_path, call_id):
         "timestamp": <current_time_in_iso_format>,
         "function": "get_line_count"
         "applicationId": "my_app",
-        "parentId": "{call_id}",
-        "eventId": <generated string identifier>
         "elapsedMs": <elapsed call time, in milliseconds>,
         "lineCount": <number of lines counted>
     }"""

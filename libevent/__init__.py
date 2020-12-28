@@ -5,13 +5,12 @@ from __future__ import annotations
 
 from datetime import datetime
 from typing import Any, Callable, Dict, List, Optional
-import secrets
 import libevent.constants as constants
 import libevent.state as state
 from libevent.client import Client
 from libevent.event import Event
 from libevent.handler import Handler
-from libevent.log_handler import LogHandler
+from libevent.stdout_handler import StdoutHandler
 
 
 """
@@ -26,14 +25,10 @@ Sample usage:
 """
 
 
-def init(app_id: str = None, handlers: List[Handler] = None) -> None:
-    if not app_id:
-        app_id = secrets.token_hex(16).upper()
-    if not handlers:
-        handlers = [LogHandler.with_handler(name=app_id)]
+def init(handlers: Optional[List[Handler]] = None) -> None:
+    if handlers is None:
+        handlers = [StdoutHandler()]
     state.CLIENT = Client(handlers)
-    state.CLIENT.add_field(constants.APP_ID_KEY, app_id)
-    state.CLIENT.add_field(constants.INIT_TIMESTAMP_KEY, datetime.utcnow())
     # Set to False to not spam handlers with warnings if we call init late.
     state.WARNED_UNINITIALIZED = False
 
@@ -53,13 +48,9 @@ def add(data: Dict) -> None:
 
 
 def new_event(data: Optional[Dict] = None,
-              calling_func: Callable = None,
-              parent_id: str = None,
-              event_id: str = None) -> Event:
-    evt = Event(data=data, client=state.CLIENT, event_id=event_id)
+              calling_func: Callable = None) -> Event:
+    evt = Event(data=data, client=state.CLIENT)
     evt.add_field(constants.TIMESTAMP_KEY, datetime.utcnow())
     if calling_func:
         evt.add_field(constants.OPERATION_KEY, calling_func.__name__)
-    if parent_id:
-        evt.add_field(constants.PARENT_ID_KEY, parent_id)
     return evt

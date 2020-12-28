@@ -1,7 +1,5 @@
 APP_ID_KEY = "applicationId"
-EVENT_ID_KEY = "eventId"
 INIT_TIMESTAMP_KEY = "applicationInitTimestamp"
-PARENT_ID_KEY = "parentEventId"
 TIMESTAMP_KEY = "timestamp"
 OPERATION_KEY = "operation"
 RETURN_VALUE_KEY = "returnValue"
