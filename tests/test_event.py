@@ -1,3 +1,4 @@
+from copy import deepcopy
 from io import StringIO
 from unittest import TestCase
 from unittest.mock import patch
@@ -40,23 +41,33 @@ class TestEvent(TestCase):
 
     def test_init(self):
         evt = self.evt
-        expected = {**self.data, **evt._fields.get_data()}
+        expected = {**self.data, **evt.fields()}
         assert(evt is not None)
-        assert(expected == evt._fields.get_data())
+        assert(expected == evt.fields())
 
     def test_add_field(self):
         evt = self.evt
         added = {"field3": "value3"}
-        expected = {**evt._fields.get_data(), **added}
+        expected = {**evt.fields(), **added}
         evt.add_field("field3", "value3")
-        assert(expected == evt._fields.get_data())
+        assert(expected == evt.fields())
+
+    def test_remove_field(self):
+        evt = self.evt
+        expected_original = deepcopy(evt.fields())
+        added = {"field3": "value3"}
+        expected = {**evt.fields(), **added}
+        evt.add(added)
+        assert(expected == evt.fields())
+        del(evt.fields()["field3"])
+        assert(expected_original == evt.fields())
 
     def test_add(self):
         evt = self.evt
         added = {"field3": "value3"}
-        expected = {**evt._fields.get_data(), **added}
+        expected = {**evt.fields(), **added}
         evt.add(added)
-        assert(expected == evt._fields.get_data())
+        assert(expected == evt.fields())
 
     @patch('libevent.state.logging')
     def test_send_uninitialized(self, mock_logger):
@@ -67,13 +78,13 @@ class TestEvent(TestCase):
 
     def test_send(self):
         libevent.init()
-        evt = libevent.new_event(self.evt._fields.get_data())
+        evt = libevent.new_event(self.evt.fields())
         evt.send()
         self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
 
     def test_send_default(self):
         libevent.init()
-        evt = libevent.new_event(self.evt._fields.get_data())
+        evt = libevent.new_event(self.evt.fields())
         evt.send()
         self.assertFalse(libevent.state.WARNED_UNINITIALIZED)
 
@@ -84,7 +95,7 @@ class TestEvent(TestCase):
 
         mock_datetime.datetime.utcnow = TimeFaker().fake_now
         libevent.init()
-        libevent.new_event(self.evt._fields.get_data())
+        libevent.new_event(self.evt.fields())
         evt = self.evt
         with evt.timer():
             do_nothing()

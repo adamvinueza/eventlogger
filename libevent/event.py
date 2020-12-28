@@ -30,7 +30,10 @@ class Event(object):
         self._fields += fields
 
     def __getitem__(self, key: str) -> Any:
-        return self._fields[key]
+        return self.fields()[key]
+
+    def __delitem__(self, key: str) -> None:
+        del(self.fields()[key])
 
     def __contains__(self, key: str) -> bool:
         return key in self._fields
