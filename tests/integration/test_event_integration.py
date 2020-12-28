@@ -1,5 +1,6 @@
 from unittest import TestCase
-from libevent import state, LogHandler
+from libevent import state
+from libevent.log_handler import LogHandler
 from io import StringIO
 import libevent
 import logging
@@ -7,13 +8,13 @@ import os
 
 
 def get_func_event(f, call_id=None):
-    evt = libevent.new_event(parent_id=call_id)
+    evt = libevent.new_event()
     evt.add_field('func_name', f.__name__)
     return evt
 
 
-def add(x, y, call_id):
-    evt = get_func_event(f=add, call_id=call_id)
+def add(x, y):
+    evt = get_func_event(f=add, call_id=add.__name__)
     evt.add_field('params', {
         'x': x,
         'y': y
@@ -34,7 +35,7 @@ class TestEventFileLogger(TestCase):
             name=app_id,
             handler=logging.FileHandler(filename=self.logfile_path)
         )
-        libevent.init(app_id=app_id, handlers=[lh])
+        libevent.init(handlers=[lh])
 
     def tearDown(self):
         os.remove(self.logfile_path)
@@ -44,9 +45,10 @@ class TestEventFileLogger(TestCase):
 
     def test_send(self):
         evt = libevent.new_event()
-        evt.add_field('func_name', self.test_send.__name__)
-        add(1, 2, evt.id)
-        add(3, 4, evt.id)
+        func = self.test_send.__name__
+        evt.add_field('func_name', func)
+        add(1, 2)
+        add(3, 4)
         evt.send()
         self.assertTrue(os.path.exists(self.logfile_path))
         with open(self.logfile_path) as reader:
@@ -70,8 +72,8 @@ class TestEventConsoleLogger(TestCase):
     def test_send(self):
         evt = libevent.new_event()
         evt.add_field('func_name', self.test_send.__name__)
-        add(1, 2, evt.id)
-        add(3, 4, evt.id)
+        add(1, 2)
+        add(3, 4)
         evt.send()
         self.stream.seek(0)
         lines = sum(1 for _ in self.stream)

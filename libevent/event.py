@@ -2,10 +2,8 @@ import datetime
 from typing import Any, Dict, Generator, Optional
 from libevent.client import Client
 import libevent.state as state
-import secrets
 from contextlib import contextmanager
 from libevent.fields import Fields
-from libevent.constants import EVENT_ID_KEY
 """
 ADAPTED FROM Event CLASS AT https://github.com/honeycombio/libhoney-py
 """
@@ -30,11 +28,6 @@ class Event(object):
             data = {}
         self._fields.add(data)
         self._fields += fields
-        if event_id:
-            self.id = event_id
-        else:
-            self.id = secrets.token_hex(8)
-        self.add_field(EVENT_ID_KEY, self.id)
 
     def __getitem__(self, key: str) -> Any:
         return self._fields[key]
