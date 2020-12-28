@@ -89,4 +89,3 @@ class TestEvent(TestCase):
         with evt.timer():
             do_nothing()
         self.assertEqual(1000, evt[libevent.event.Event.ELAPSED_MS_KEY])
-

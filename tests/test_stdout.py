@@ -25,4 +25,3 @@ class TestStdoutHandler(TestCase):
         lines = sum(1 for _ in self.stream)
         self.stream.seek(0)
         self.assertEqual(1, lines)
-

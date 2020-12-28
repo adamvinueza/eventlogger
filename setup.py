@@ -14,7 +14,7 @@ setup(name='libevent',
       author_email='adamvinueza@pm.me',
       license='Apache 2.0',
       packages=['libevent'],
-      package_data = {
+      package_data={
           'libevent': ['py.typed']
       },
       classifiers=[
