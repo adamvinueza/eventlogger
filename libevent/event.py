@@ -17,7 +17,6 @@ class Event(object):
     def __init__(self,
                  data: Optional[Dict] = None,
                  fields: Fields = Fields(),
-                 event_id: Optional[str] = None,
                  client: Optional[Client] = None):
         """Constructor. Should be called only by libevent.new_event()."""
         self.client = client

@@ -3,6 +3,7 @@ from typing import Any, Dict, List, Optional
 from libevent.handler import Handler
 from libevent.stdout_handler import StdoutHandler
 from libevent.fields import Fields
+from libevent.event import Event
 
 
 class Client(Handler):
@@ -20,13 +21,16 @@ class Client(Handler):
     def __contains__(self, key):
         return key in self.fields
 
+    def add(self, data: Dict) -> None:
+        """Use a mappable object to add a global field."""
+        self.fields.add(data)
+
     def add_field(self, name: str, value: Any) -> None:
         """Add a global field."""
         self.fields.add_field(name, value)
 
-    def add(self, data: Dict) -> None:
-        """Use a mappable object to add a global field."""
-        self.fields.add(data)
+    def new_client(self, data: Optional[Dict] = None):
+        return Event(data=data, client=self)
 
     def send(self, evt: Any) -> None:
         """Send the event using the handlers."""
