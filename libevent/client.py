@@ -29,7 +29,7 @@ class Client(Handler):
         """Add a global field."""
         self.fields.add_field(name, value)
 
-    def new_client(self, data: Optional[Dict] = None):
+    def new_event(self, data: Optional[Dict] = None):
         return Event(data=data, client=self)
 
     def send(self, evt: Any) -> None:
