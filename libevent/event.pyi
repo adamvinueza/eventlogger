@@ -1,16 +1,17 @@
 # event.pyi
 
 from typing import Any, Dict, Generator, Optional
-from libevent.client import Client
-from contextlib import contextmanager
+from libevent.handler import Handler
 from libevent.fields import Fields
 
 class Event:
+    _fields: Fields
+    client: Handler
     def __init__(
         self,
         data: Optional[Dict] = None,
         fields: Fields = Fields(),
-        client: Optional[Client] = None) -> None: ...
+        client: Optional[Handler] = None) -> None: ...
     def __getitem__(self, key: str) -> Any: ...
     def __contains__(self, key: str) -> bool: ...
     def add_field(self, key: str, value: Any) -> None: ...
