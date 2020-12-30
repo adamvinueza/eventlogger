@@ -1,6 +1,6 @@
 import datetime
 from typing import Any, Dict, Generator, Optional
-from libevent.client import Client
+from libevent.handler import Handler
 import libevent.state as state
 from contextlib import contextmanager
 from libevent.fields import Fields
@@ -17,7 +17,7 @@ class Event(object):
     def __init__(self,
                  data: Optional[Dict] = None,
                  fields: Fields = Fields(),
-                 client: Optional[Client] = None):
+                 client: Optional[Handler] = None):
         """Constructor. Should be called only by libevent.new_event()."""
         self.client = client
         self._fields = Fields()

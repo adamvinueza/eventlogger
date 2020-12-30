@@ -1,7 +1,10 @@
 from typing import Any, Protocol
+from libevent.fields import Fields
 
 
 class Handler(Protocol):
+
+    fields: Fields
 
     def send(self, evt: Any) -> None:
         """Sends the supplied event.
